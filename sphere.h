@@ -20,8 +20,8 @@ __device__ bool sphere::hit(const ray& r, DataType t_min, DataType t_max, hit_re
     DataType b = dot(oc, r.direction());
     DataType c = dot(oc, oc) - radius*radius;
     DataType discriminant = b*b - a*c;
-    if (discriminant > 0) {
-        DataType temp = (-b - sqrt(discriminant))/a;
+    if (discriminant > float2datatype(0)) {
+        DataType temp = (-b - datatypesqrt(discriminant))/a;
         if (temp < t_max && temp > t_min) {
             rec.t = temp;
             rec.p = r.point_at_parameter(rec.t);
@@ -29,7 +29,7 @@ __device__ bool sphere::hit(const ray& r, DataType t_min, DataType t_max, hit_re
             rec.mat_ptr = mat_ptr;
             return true;
         }
-        temp = (-b + sqrt(discriminant)) / a;
+        temp = (-b + datatypesqrt(discriminant)) / a;
         if (temp < t_max && temp > t_min) {
             rec.t = temp;
             rec.p = r.point_at_parameter(rec.t);

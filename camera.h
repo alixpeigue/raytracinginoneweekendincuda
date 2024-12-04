@@ -13,24 +13,24 @@ __device__ vec3 random_in_unit_disk(curandState *local_rand_state) {
     vec3 p;
     do {
         p = 2.0f*vec3(curand_uniform(local_rand_state),curand_uniform(local_rand_state),0) - vec3(1,1,0);
-    } while (dot(p,p) >= 1.0f);
+    } while (dot(p,p) >= float2datatype(1.0f));
     return p;
 }
 
 class camera {
 public:
     __device__ camera(vec3 lookfrom, vec3 lookat, vec3 vup, DataType vfov, DataType aspect, DataType aperture, DataType focus_dist) { // vfov is top to bottom in degrees
-        lens_radius = aperture / 2.0f;
-        DataType theta = vfov*((DataType)M_PI)/180.0f;
-        DataType half_height = tan(theta/2.0f);
+        lens_radius = aperture / float2datatype(2.0f);
+        DataType theta = vfov*((DataType)M_PI)/float2datatype(180.0f);
+        DataType half_height = tan(theta/float2datatype(2.0f));
         DataType half_width = aspect * half_height;
         origin = lookfrom;
         w = unit_vector(lookfrom - lookat);
         u = unit_vector(cross(vup, w));
         v = cross(w, u);
         lower_left_corner = origin  - half_width*focus_dist*u -half_height*focus_dist*v - focus_dist*w;
-        horizontal = 2.0f*half_width*focus_dist*u;
-        vertical = 2.0f*half_height*focus_dist*v;
+        horizontal = float2datatype(2.0f)*half_width*focus_dist*u;
+        vertical = float2datatype(2.0f)*half_height*focus_dist*v;
     }
     __device__ ray get_ray(DataType s, DataType t, curandState *local_rand_state) {
         vec3 rd = lens_radius*random_in_unit_disk(local_rand_state);

@@ -45,8 +45,8 @@ __device__ vec3 color(const ray& r, hitable **world, curandState *local_rand_sta
         }
         else {
             vec3 unit_direction = unit_vector(cur_ray.direction());
-            DataType t = 0.5f*(unit_direction.y() + 1.0f);
-            vec3 c = (1.0f-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+            DataType t = 0.5*(unit_direction.y() + 1.0);
+            vec3 c = (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
             return cur_attenuation * c;
         }
     }
@@ -86,9 +86,9 @@ __global__ void render(vec3 *fb, int max_x, int max_y, int ns, camera **cam, hit
     }
     rand_state[pixel_index] = local_rand_state;
     col /= DataType(ns);
-    col[0] = sqrt(col[0]);
-    col[1] = sqrt(col[1]);
-    col[2] = sqrt(col[2]);
+    col[0] = datatypesqrt(col[0]);
+    col[1] = datatypesqrt(col[1]);
+    col[2] = datatypesqrt(col[2]);
     fb[pixel_index] = col;
 }
 

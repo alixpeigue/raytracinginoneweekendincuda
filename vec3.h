@@ -32,7 +32,7 @@ public:
     __host__ __device__ inline vec3& operator*=(const DataType t);
     __host__ __device__ inline vec3& operator/=(const DataType t);
 
-    __host__ __device__ inline DataType length() const { return sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
+    __host__ __device__ inline DataType length() const { return datatypesqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
     __host__ __device__ inline DataType squared_length() const { return e[0]*e[0] + e[1]*e[1] + e[2]*e[2]; }
     __host__ __device__ inline void make_unit_vector();
 
@@ -42,18 +42,18 @@ public:
 
 
 
-inline std::istream& operator>>(std::istream &is, vec3 &t) {
-    is >> t.e[0] >> t.e[1] >> t.e[2];
-    return is;
-}
+// inline std::istream& operator>>(std::istream &is, vec3 &t) {
+//     is >> t.e[0] >> t.e[1] >> t.e[2];
+//     return is;
+// }
 
-inline std::ostream& operator<<(std::ostream &os, const vec3 &t) {
-    os << t.e[0] << " " << t.e[1] << " " << t.e[2];
-    return os;
-}
+// inline std::ostream& operator<<(std::ostream &os, const vec3 &t) {
+//     os << t.e[0] << " " << t.e[1] << " " << t.e[2];
+//     return os;
+// }
 
 __host__ __device__ inline void vec3::make_unit_vector() {
-    DataType k = 1.0 / sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
+    DataType k = float2datatype(1.0) / sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
     e[0] *= k; e[1] *= k; e[2] *= k;
 }
 
@@ -132,7 +132,7 @@ __host__ __device__ inline vec3& vec3::operator*=(const DataType t) {
 }
 
 __host__ __device__ inline vec3& vec3::operator/=(const DataType t) {
-    DataType k = 1.0/t;
+    DataType k = float2datatype(1.0)/t;
 
     e[0]  *= k;
     e[1]  *= k;
