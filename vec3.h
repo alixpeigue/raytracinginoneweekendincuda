@@ -32,9 +32,9 @@ public:
     __host__ __device__ inline vec3& operator*=(const DataType t);
     __host__ __device__ inline vec3& operator/=(const DataType t);
 
-    __host__ __device__ inline DataType length() const { return datatypesqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
+    __device__ inline DataType length() const { return datatypesqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]); }
     __host__ __device__ inline DataType squared_length() const { return e[0]*e[0] + e[1]*e[1] + e[2]*e[2]; }
-    __host__ __device__ inline void make_unit_vector();
+    __device__ inline void make_unit_vector();
 
 
     DataType e[3];
@@ -52,8 +52,8 @@ public:
 //     return os;
 // }
 
-__host__ __device__ inline void vec3::make_unit_vector() {
-    DataType k = float2datatype(1.0) / sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
+__device__ inline void vec3::make_unit_vector() {
+    DataType k = float2datatype(1.0) / datatypesqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]);
     e[0] *= k; e[1] *= k; e[2] *= k;
 }
 
@@ -140,7 +140,7 @@ __host__ __device__ inline vec3& vec3::operator/=(const DataType t) {
     return *this;
 }
 
-__host__ __device__ inline vec3 unit_vector(vec3 v) {
+__device__ inline vec3 unit_vector(vec3 v) {
     return v / v.length();
 }
 
