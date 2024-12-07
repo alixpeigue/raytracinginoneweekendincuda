@@ -22,7 +22,7 @@ public:
     __device__ camera(vec3 lookfrom, vec3 lookat, vec3 vup, DataType vfov, DataType aspect, DataType aperture, DataType focus_dist) { // vfov is top to bottom in degrees
         lens_radius = aperture / float2datatype(2.0f);
         DataType theta = vfov*((DataType)M_PI)/float2datatype(180.0f);
-        DataType half_height = tan(theta/float2datatype(2.0f));
+        DataType half_height = datatypetan(theta/float2datatype(2.0f));
         DataType half_width = aspect * half_height;
         origin = lookfrom;
         w = unit_vector(lookfrom - lookat);

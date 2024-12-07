@@ -11,7 +11,7 @@ struct hit_record;
 __device__ DataType schlick(DataType cosine, DataType ref_idx) {
     DataType r0 = (float2datatype(1.0f)-ref_idx) / (float2datatype(1.0f)+ref_idx);
     r0 = r0*r0;
-    return r0 + (float2datatype(1.0f)-r0)*pow((float2datatype(1.0f) - cosine),5.0f);
+    return r0 + (float2datatype(1.0f)-r0)*float2datatype(pow((float2datatype(1.0f) - cosine),5.0f));
 }
 
 __device__ bool refract(const vec3& v, const vec3& n, DataType ni_over_nt, vec3& refracted) {
@@ -90,7 +90,7 @@ public:
             outward_normal = -rec.normal;
             ni_over_nt = ref_idx;
             cosine = dot(r_in.direction(), rec.normal) / r_in.direction().length();
-            cosine = sqrt(float2datatype(1.0f) - ref_idx*ref_idx*(1-cosine*cosine));
+            cosine = datatypesqrt(float2datatype(1.0f) - ref_idx*ref_idx*(float2datatype(1.0f)-cosine*cosine));
         }
         else {
             outward_normal = rec.normal;

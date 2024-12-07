@@ -45,8 +45,8 @@ __device__ vec3 color(const ray& r, hitable **world, curandState *local_rand_sta
         }
         else {
             vec3 unit_direction = unit_vector(cur_ray.direction());
-            DataType t = 0.5*(unit_direction.y() + 1.0);
-            vec3 c = (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+            DataType t = float2datatype(0.5)*(unit_direction.y() + float2datatype(1.0));
+            vec3 c = (float2datatype(1.0)-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
             return cur_attenuation * c;
         }
     }
@@ -104,11 +104,11 @@ __global__ void create_world(hitable **d_list, hitable **d_world, camera **d_cam
             for(int b = -11; b < 11; b++) {
                 DataType choose_mat = RND;
                 vec3 center(a+RND,0.2,b+RND);
-                if(choose_mat < 0.8f) {
+                if(choose_mat < float2datatype(0.8f)) {
                     d_list[i++] = new sphere(center, 0.2,
                                              new lambertian(vec3(RND*RND, RND*RND, RND*RND)));
                 }
-                else if(choose_mat < 0.95f) {
+                else if(choose_mat < float2datatype(0.95f)) {
                     d_list[i++] = new sphere(center, 0.2,
                                              new metal(vec3(0.5f*(1.0f+RND), 0.5f*(1.0f+RND), 0.5f*(1.0f+RND)), 0.5f*RND));
                 }
@@ -206,9 +206,9 @@ int main() {
     for (int j = ny-1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
             size_t pixel_index = j*nx + i;
-            int ir = int(255.99*fb[pixel_index].r());
-            int ig = int(255.99*fb[pixel_index].g());
-            int ib = int(255.99*fb[pixel_index].b());
+            int ir = int(float2datatype(255.99)*fb[pixel_index].r());
+            int ig = int(float2datatype(255.99)*fb[pixel_index].g());
+            int ib = int(float2datatype(255.99)*fb[pixel_index].b());
             std::cout << ir << " " << ig << " " << ib << "\n";
         }
     }
