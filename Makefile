@@ -7,7 +7,7 @@ NVCC           = $(CUDA_PATH)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG       =
 
 NVCCFLAGS      = $(NVCC_DBG) -m64
-GENCODE_FLAGS  =
+GENCODE_FLAGS  = -arch=sm_53
 
 SRCS = main.cu
 INCS = vec3.h ray.h hitable.h hitable_list.h sphere.h camera.h material.h datatype.h
