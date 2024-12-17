@@ -206,9 +206,9 @@ int main() {
     for (int j = ny-1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
             size_t pixel_index = j*nx + i;
-            int ir = int(float2datatype(255.99)*fb[pixel_index].r());
-            int ig = int(float2datatype(255.99)*fb[pixel_index].g());
-            int ib = int(float2datatype(255.99)*fb[pixel_index].b());
+            int ir = int(float2datatype(255.01)*fb[pixel_index].r());
+            int ig = int(float2datatype(255.01)*fb[pixel_index].g());
+            int ib = int(float2datatype(255.01)*fb[pixel_index].b());
             std::cout << ir << " " << ig << " " << ib << "\n";
         }
     }
